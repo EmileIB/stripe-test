@@ -8,24 +8,39 @@ import "./App.css";
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
 // This is your test publishable API key.
-const stripePromise = loadStripe("pk_test_51M0PmcDQDP0cu3FilEJPuC9C124s8GHOGfXXAK6nRwB1hmYcgB0422h1mDbpcsUweqFKalk1VtEIpCAWKn2hysO300tzJKMEpu");
+const stripePromise = loadStripe(
+  "pk_test_51M0PmcDQDP0cu3FilEJPuC9C124s8GHOGfXXAK6nRwB1hmYcgB0422h1mDbpcsUweqFKalk1VtEIpCAWKn2hysO300tzJKMEpu"
+);
 
 export default function App() {
   const [clientSecret, setClientSecret] = useState("");
 
   useEffect(() => {
+    const body = {
+      email: "emileib.lb@gmail.com",
+      name: "Emile",
+      phoneNumber: '1234567890',
+      country: 'US',
+      state: 'CA',
+      city: 'San Francisco',
+      line1: '1234 Main St',
+      postal_code: '94111',
+    }
     // Create PaymentIntent as soon as the page loads
-    fetch("/create-payment-intent", {
+    fetch("http://localhost:8080/api/payment/stripe", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
+      body: JSON.stringify(body),
     })
       .then((res) => res.json())
-      .then((data) => setClientSecret(data.clientSecret));
+      .then((data) => {
+        console.log(data);
+        setClientSecret(data.data.clientSecret);
+      });
   }, []);
 
   const appearance = {
-    theme: 'stripe',
+    theme: "stripe",
   };
   const options = {
     clientSecret,
