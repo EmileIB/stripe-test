@@ -17,17 +17,18 @@ export default function App() {
 
   useEffect(() => {
     const body = {
-      email: "emileib.lb@gmail.com",
-      name: "Emile",
-      phoneNumber: '1234567890',
-      country: 'US',
-      state: 'CA',
-      city: 'San Francisco',
-      line1: '1234 Main St',
-      postal_code: '94111',
+      // email: "emileib.lb@gmail.com",
+      // name: "Emile",
+      // phoneNumber: '1234567890',
+      // country: 'US',
+      // state: 'CA',
+      // city: 'San Francisco',
+      // line1: '1234 Main St',
+      // postal_code: '94111',
+      paymentId:'64b5468a50465ef6dfbb8f8d',
     }
     // Create PaymentIntent as soon as the page loads
-    fetch("http://localhost:8080/api/payment/stripe", {
+    fetch("http://localhost:8080/v1/stripe/create-payment-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -35,7 +36,7 @@ export default function App() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setClientSecret(data.data.clientSecret);
+        setClientSecret(data.client_secret);
       });
   }, []);
 
